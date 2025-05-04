@@ -1,11 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
-dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
-
 import db from './database/configdb.js';
 import userRoute from './routes/user.route.js';
 import tokenRoute from './routes/token.route.js';
 
+dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
 
 db.connect()
   .then(() => db.initializeDatabase()) // Inicializa o banco de dados e cria a tabela users
