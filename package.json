@@ -1,6 +1,6 @@
 {
     "name": "backend-express-postgresql",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "",
     "main": "api/index.js",
     "type": "module",
