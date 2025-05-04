@@ -18,7 +18,7 @@ app.use(express.json());
 app.use("/", userRoute);
 app.use("/", tokenRoute);
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('Banco de dados está no ar!');
 });
 
 const PORT = process.env.PORT || 3000;
