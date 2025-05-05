@@ -19,8 +19,6 @@ export default (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         }
-    }, {
-        timestamps: false // Deshabilita createdAt y updatedAt
     });
 
     return User;
