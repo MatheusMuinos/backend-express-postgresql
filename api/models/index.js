@@ -7,19 +7,17 @@ const sequelize = new Sequelize(
     dbConfig.database,
     dbConfig.user,
     dbConfig.password,
-
     {
         host: dbConfig.host,
         dialect: dbConfig.dialect,
         port: dbConfig.port,
         dialectModule: pg,
-        dialectOptions: {
+        dialectOptions: dbConfig.host !== 'localhost' ? { // Solo usar SSL si no es localhost
             ssl: {
                 require: true,
-                rejectUnauthorized: process.env.NODE_ENV === 'production'
+                rejectUnauthorized: false
             }
-        },
-        
+        } : {}, // Sin SSL para conexiones locales
         pool: {
             max: dbConfig.pool.max,
             min: dbConfig.pool.min,
