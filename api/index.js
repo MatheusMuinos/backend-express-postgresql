@@ -2,7 +2,7 @@ import express from "express";
 import db from "./models/index.js";
 import userRoute from "./routes/user.route.js";
 
-db.sequelize.sync()
+db.sequelize.sync({ force: true })
     .then(() => {
         console.log("Database synchronized");
     })
