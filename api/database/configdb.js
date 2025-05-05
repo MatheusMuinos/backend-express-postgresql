@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
-dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
+dotenv.config();
+
 const connectionString = process.env.DATABASE_URL;
 
 if (!connectionString) {
@@ -10,21 +11,18 @@ if (!connectionString) {
 
 console.log("Connecting to PostgreSQL with connection string:", connectionString);
 
+// Detecta se é banco em nuvem (ex: Neon) pelo domínio ou query params
+const isCloudDatabase = connectionString.includes('.neon.tech') || connectionString.includes('sslmode=require');
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false // necessário para o Neon
-  }
+  connectionString,
+  ...(isCloudDatabase && {
+    ssl: { rejectUnauthorized: false }
+  })
 });
 
 const connect = async () => {
-  try {
-    await pool.connect();
-    console.log("Connected to PostgreSQL");
-  } catch (error) {
-    console.error("Error connecting to PostgreSQL", error);
-    process.exit(1);
-  }
+  console.log("PostgreSQL pool is ready (no manual connection needed).");
 };
 
 const initializeDatabase = async () => {
@@ -46,4 +44,4 @@ const initializeDatabase = async () => {
   }
 };
 
-export default { connect, pool, initializeDatabase };
+export default { connect, initializeDatabase, pool };
