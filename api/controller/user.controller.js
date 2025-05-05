@@ -6,18 +6,15 @@ const register = async (req, res) => {
   console.log("Registering user", req.body);
   const { username, email, password } = req.body;
 
-  // Validação dos campos obrigatórios
   if (!username || !email || !password) {
     return res.status(400).json({ message: "Username, email, and password are required" });
   }
 
-  // Validação do formato do email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return res.status(400).json({ message: "Invalid email format" });
   }
 
-  // Validação da senha: mínimo 8 caracteres, pelo menos uma letra e um número
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
   if (!passwordRegex.test(password)) {
     return res.status(400).json({ 
@@ -26,17 +23,14 @@ const register = async (req, res) => {
   }
 
   try {
-    // Verifica se o email ou username já existem
     const existingUser = await User.findUserByUsernameOrEmail(username, email);
     if (existingUser) {
       return res.status(400).json({ message: "Username or email already exists" });
     }
 
-    // Criptografa a senha
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Cria o novo usuário
     const savedUser = await User.createUser(username, email, hashedPassword);
     return res.status(200).json({ message: 'User registered successfully', username: savedUser.username });
   } catch (error) {

@@ -1,13 +1,14 @@
 import db from '../database/configdb.js';
+import pool from '../database/configdb.js';
 
 const createUser = async (username, email, password) => {
   const query = `
     INSERT INTO users (username, email, password)
     VALUES ($1, $2, $3)
-    RETURNING id, username, email;
+    RETURNING username;
   `;
   const values = [username, email, password];
-  const result = await db.pool.query(query, values);
+  const result = await pool.query(query, values);
   return result.rows[0];
 };
 
