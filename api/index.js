@@ -1,32 +1,29 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
-dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
+import express from "express";
+import db from "./models/index.js";
+import userRoute from "./routes/user.route.js";
 
-import db from './database/configdb.js';
-import userRoute from './routes/user.route.js';
-import tokenRoute from './routes/token.route.js';
+db.sequelize.sync()
+    .then(() => {
+        console.log("Database synchronized");
+    })
+    .catch((error) => {
+        console.error("Error synchronizing database:", error);
+    });
 
+const app = express();
 
-db.connect()
-  .then(() => db.initializeDatabase()) // Inicializa o banco de dados e cria a tabela users
-  .then(() => console.log("Database initialized"))
-  .catch((err) => console.error("Error during database initialization", err));
+app.use(express.json());
 
-  const app = express();
+app.use("/", userRoute);
+app.use("/SecuredRoute", userRoute);
+app.use("/users", userRoute);
 
-  app.use(cors());
-  app.use(express.json());
-  app.use('/', userRoute);
-  app.use('/', tokenRoute);
-  
-  app.get('/', (req, res) => {
-    res.send('Banco de dados está no ar!');
-  });
-  
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
+app.get("/", (req, res) => {
+    res.send("EXPRESS BACKEND COM POSTGRESQL");
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-  });
+});
 
-  export default app;
