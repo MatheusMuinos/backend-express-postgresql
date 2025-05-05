@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config(); // Carrega as variáveis de ambiente do arquivo .env
 
 import db from './database/configdb.js';
@@ -12,16 +13,18 @@ db.connect()
   .then(() => console.log("Database initialized"))
   .catch((err) => console.error("Error during database initialization", err));
 
-const app = express();
+  const app = express();
 
-app.use(express.json());
-app.use("/", userRoute);
-app.use("/", tokenRoute);
-app.get('/', (req, res) => {
-  res.send('Banco de dados está no ar!');
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+  app.use(cors());
+  app.use(express.json());
+  app.use('/', userRoute);
+  app.use('/', tokenRoute);
+  
+  app.get('/', (req, res) => {
+    res.send('Banco de dados está no ar!');
+  });
+  
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
