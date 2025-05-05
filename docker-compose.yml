@@ -1,3 +1,5 @@
+version: '3.5'
+
 services:
   postgres:
     container_name: postgres_container
@@ -23,7 +25,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
       PGADMIN_CONFIG_PROXY_X_HOST_COUNT: 1
-      PGADMIN_CONFIG_PROXY_Y_PREFIX_COUNT: 1
+      PGADMIN_CONFIG_PROXY_X_PREFIX_COUNT: 1
     volumes:
        - pgadmin:/var/lib/pgadmin
 
