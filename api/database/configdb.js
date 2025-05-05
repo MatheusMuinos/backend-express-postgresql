@@ -11,8 +11,10 @@ if (!connectionString) {
 console.log("Connecting to PostgreSQL with connection string:", connectionString);
 
 const pool = new Pool({
-  connectionString,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false, // SSL para produção
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // necessário para o Neon
+  }
 });
 
 const connect = async () => {
