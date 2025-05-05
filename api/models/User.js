@@ -1,5 +1,5 @@
+// models/User.js
 import db from '../database/configdb.js';
-import pool from '../database/configdb.js';
 
 const createUser = async (username, email, password) => {
   const query = `
@@ -8,7 +8,7 @@ const createUser = async (username, email, password) => {
     RETURNING username;
   `;
   const values = [username, email, password];
-  const result = await pool.query(query, values);
+  const result = await db.pool.query(query, values);
   return result.rows[0];
 };
 
@@ -24,9 +24,7 @@ const findUserByUsernameOrEmail = async (username, email) => {
 };
 
 const findAllUsers = async () => {
-  const query = `
-    SELECT id, username, email FROM users;
-  `;
+  const query = `SELECT id, username, email FROM users;`;
   const result = await db.pool.query(query);
   return result.rows;
 };
