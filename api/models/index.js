@@ -7,12 +7,12 @@ const sequelize = process.env.DATABASE_URL
     ? new Sequelize(process.env.DATABASE_URL, {
         dialect: 'postgres',
         dialectModule: pg,
-        dialectOptions: {
+        dialectOptions: process.env.DATABASE_URL.includes('neon.tech') ? { // Habilita SSL apenas para Neon
             ssl: {
                 require: true,
                 rejectUnauthorized: false
             }
-        },
+        } : {}, // conexões locais
         pool: {
             max: dbConfig.pool.max,
             min: dbConfig.pool.min,
